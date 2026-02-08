@@ -1,0 +1,81 @@
+{
+    "name": "SVEHI - Issue to Branch",
+    "nodes": [
+        {
+            "parameters": {
+                "authentication": "oAuth2",
+                "githubApi": "cloud",
+                "resource": "issue",
+                "event": "opened,assigned",
+                "owner": "luismonterocuartero-dot",
+                "repository": "svehi-backend"
+            },
+            "name": "Github Trigger",
+            "type": "n8n-nodes-base.githubTrigger",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "authentication": "oAuth2",
+                "requestMethod": "POST",
+                "url": "=https://api.github.com/repos/{{$json.repository.owner.login}}/{{$json.repository.name}}/git/refs",
+                "jsonParameters": true,
+                "options": {},
+                "bodyParametersJson": "={ \"ref\": \"refs/heads/feature/{{$json.issue.number}}-{{$json.issue.title.replace(/ /g, '-').toLowerCase()}}\", \"sha\": \"{{$json.repository.default_branch_ref}}\" }"
+            },
+            "name": "Create Branch",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 1,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "authentication": "oAuth2",
+                "resource": "issue",
+                "operation": "createComment",
+                "owner": "={{$json.repository.owner.login}}",
+                "repository": "={{$json.repository.name}}",
+                "issueNumber": "={{$json.issue.number}}",
+                "body": "=🚀 Branch created: `feature/{{$json.issue.number}}-{{$json.issue.title.replace(/ /g, '-').toLowerCase()}}`"
+            },
+            "name": "Comment on Issue",
+            "type": "n8n-nodes-base.github",
+            "typeVersion": 1,
+            "position": [
+                650,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Github Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Create Branch",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Create Branch": {
+            "main": [
+                [
+                    {
+                        "node": "Comment on Issue",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

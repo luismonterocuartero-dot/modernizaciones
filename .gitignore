@@ -69,3 +69,7 @@ Thumbs.db
 # Misc
 *.orig
 connection_success.log
+
+# Sub-projects
+svehi-backend/
+svehi-frontend/

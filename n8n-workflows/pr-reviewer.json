@@ -1,0 +1,111 @@
+{
+    "name": "SVEHI - PR Reviewer & Style Check",
+    "nodes": [
+        {
+            "parameters": {
+                "authentication": "oAuth2",
+                "githubApi": "cloud",
+                "resource": "pullRequest",
+                "event": "opened,synchronize",
+                "owner": "luismonterocuartero-dot",
+                "repository": "svehi-backend"
+            },
+            "name": "Github Trigger",
+            "type": "n8n-nodes-base.githubTrigger",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "authentication": "oAuth2",
+                "resource": "pullRequest",
+                "operation": "get",
+                "owner": "={{$json.repository.owner.login}}",
+                "repository": "={{$json.repository.name}}",
+                "pullRequestNumber": "={{$json.pull_request.number}}"
+            },
+            "name": "Get PR Details",
+            "type": "n8n-nodes-base.github",
+            "typeVersion": 1,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "model": "gpt-4-turbo",
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=Act as a Senior Code Reviewer for SVEHI project.\n\nRules:\n1. Backend (Java/Spring): Must use API-First approach. Controllers must implement 'Delegate' interfaces. No logic in controllers.\n2. Frontend (Angular): Must use Standalone Components. No NgModules.\n\nReview this PR diff (summary):\n{{$json.body}}\n\nProvide a checklist of compliance."
+                        }
+                    ]
+                }
+            },
+            "name": "AI Reviewer",
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                650,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "authentication": "oAuth2",
+                "resource": "issue",
+                "operation": "createComment",
+                "owner": "={{$node[\"Github Trigger\"].json.repository.owner.login}}",
+                "repository": "={{$node[\"Github Trigger\"].json.repository.name}}",
+                "issueNumber": "={{$node[\"Github Trigger\"].json.pull_request.number}}",
+                "body": "=🤖 **Cortex Review**\n\n{{$json.message.content}}"
+            },
+            "name": "Post Comment",
+            "type": "n8n-nodes-base.github",
+            "typeVersion": 1,
+            "position": [
+                850,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Github Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Get PR Details",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get PR Details": {
+            "main": [
+                [
+                    {
+                        "node": "AI Reviewer",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "AI Reviewer": {
+            "main": [
+                [
+                    {
+                        "node": "Post Comment",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

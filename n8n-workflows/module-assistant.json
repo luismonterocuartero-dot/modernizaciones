@@ -1,0 +1,141 @@
+{
+    "name": "SVEHI - Module Assistant (Vehículos)",
+    "nodes": [
+        {
+            "parameters": {
+                "authentication": "oAuth2",
+                "githubApi": "cloud",
+                "resource": "push",
+                "owner": "luismonterocuartero-dot",
+                "repository": "svehi-backend"
+            },
+            "name": "Github Trigger",
+            "type": "n8n-nodes-base.githubTrigger",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "authentication": "oAuth2",
+                "resource": "commit",
+                "operation": "get",
+                "owner": "={{$json.repository.owner.login}}",
+                "repository": "={{$json.repository.name}}",
+                "commitSha": "={{$json.after}}"
+            },
+            "name": "Get Commit",
+            "type": "n8n-nodes-base.github",
+            "typeVersion": 1,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "string": [
+                        {
+                            "value1": "={{$json.files.map(f => f.filename).join(',')}}",
+                            "operation": "contains",
+                            "value2": "Vehiculo.java"
+                        }
+                    ]
+                }
+            },
+            "name": "Check Vehiculo Change",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                650,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "model": "gpt-4-turbo",
+                "messages": {
+                    "values": [
+                        {
+                            "content": "=Analyze if the changes to 'Vehiculo.java' require an update to 'vehiculo.model.ts' in the frontend. If a new field was added, alert the user."
+                        }
+                    ]
+                }
+            },
+            "name": "AI Analysis",
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                850,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "authentication": "oAuth2",
+                "resource": "issue",
+                "operation": "create",
+                "owner": "luismonterocuartero-dot",
+                "repository": "svehi-frontend",
+                "title": "Update Frontend Model: Vehiculo",
+                "body": "=⚠️ **Backend Change Detected**\n\nThe `Vehiculo.java` entity was modified. Please verify if `vehiculo.model.ts` needs updates.\n\nAnalysis: {{$json.message.content}}"
+            },
+            "name": "Create Frontend Issue",
+            "type": "n8n-nodes-base.github",
+            "typeVersion": 1,
+            "position": [
+                1050,
+                200
+            ]
+        }
+    ],
+    "connections": {
+        "Github Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Get Commit",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Get Commit": {
+            "main": [
+                [
+                    {
+                        "node": "Check Vehiculo Change",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check Vehiculo Change": {
+            "main": [
+                [
+                    {
+                        "node": "AI Analysis",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "AI Analysis": {
+            "main": [
+                [
+                    {
+                        "node": "Create Frontend Issue",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
