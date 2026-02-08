@@ -21,7 +21,23 @@ export const selectVehiculosError = createSelector(
 export const selectVehiculosTotal = createSelector(
     selectVehiculosState,
 
+
     (state) => state.totalElements
+);
+
+export const selectVehiculosPage = createSelector(
+    selectVehiculosState,
+    (state) => state.page
+);
+
+export const selectVehiculosSize = createSelector(
+    selectVehiculosState,
+    (state) => state.size
+);
+
+export const selectVehiculosTotalPages = createSelector(
+    selectVehiculosState,
+    (state) => state.totalPages
 );
 
 export const selectSelectedVehiculo = createSelector(selectVehiculosState, (state) => state.selectedVehiculo);

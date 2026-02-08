@@ -17,6 +17,9 @@ export interface VehiculosState {
     loading: boolean;
     error: any;
     totalElements: number;
+    page: number;
+    size: number;
+    totalPages: number;
 }
 
 export const initialState: VehiculosState = {
@@ -33,7 +36,10 @@ export const initialState: VehiculosState = {
     infracciones: [],
     loading: false,
     error: null,
-    totalElements: 0
+    totalElements: 0,
+    page: 0,
+    size: 10,
+    totalPages: 0
 };
 
 export const vehiculosReducer = createReducer(
@@ -43,6 +49,9 @@ export const vehiculosReducer = createReducer(
         ...state,
         list: pageVehiculo.content,
         totalElements: pageVehiculo.totalElements,
+        page: pageVehiculo.number,
+        size: pageVehiculo.size,
+        totalPages: pageVehiculo.totalPages,
         loading: false,
         error: null
     })),

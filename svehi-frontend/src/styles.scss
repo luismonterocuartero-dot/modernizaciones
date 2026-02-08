@@ -1,554 +1,259 @@
-/* ============================================
-   SVEHI - Junta de Andalucía Design System
-   ============================================ */
-
-/* ========== 1. CSS Variables (Design Tokens) ========== */
+/* Tema de colores Junta de Andalucía */
 :root {
-    /* Colors - Junta de Andalucía Palette */
     --junta-primary: #007A33;
+    /* The iconic "Verde Junta" */
     --junta-primary-dark: #005C26;
+    /* Darker shade for hover/active */
     --junta-primary-light: #E8F5E9;
-    --junta-primary-mid: #2A8C4A;
-    --junta-accent: #C6A400;
-    --junta-accent-light: #FFF8E1;
+    /* Light tint for backgrounds */
 
     /* Semantic Colors */
     --junta-success: #2E7D32;
-    --junta-success-light: #E8F5E9;
     --junta-warning: #EF6C00;
-    --junta-warning-light: #FFF3E0;
     --junta-error: #D32F2F;
-    --junta-error-light: #FFEBEE;
     --junta-info: #0277BD;
-    --junta-info-light: #E1F5FE;
 
     /* Neutral Colors */
-    --junta-white: #FFFFFF;
     --junta-bg-light: #F9F9F9;
-    --junta-bg-gray: #F5F5F5;
+    /* Page backgrounds */
     --junta-text-dark: #333333;
+    /* Main text */
     --junta-text-medium: #666666;
-    --junta-text-light: #999999;
-    --junta-stroke-light: #E0E0E0;
-    --junta-stroke-medium: #CCCCCC;
-    --junta-stroke-green: #007A33;
+    /* Secondary text */
+    --junta-border: #DDDDDD;
+    /* Borders */
 
-    /* Typography */
-    --font-family-base: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-    --font-size-xs: 0.75rem;
-    /* 12px */
-    --font-size-sm: 0.875rem;
-    /* 14px */
-    --font-size-base: 1rem;
-    /* 16px */
-    --font-size-lg: 1.125rem;
-    /* 18px */
-    --font-size-xl: 1.25rem;
-    /* 20px */
-    --font-size-2xl: 1.5rem;
-    /* 24px */
-    --font-size-3xl: 2rem;
-    /* 32px */
-
-    /* Spacing */
-    --spacing-xs: 0.25rem;
-    /* 4px */
-    --spacing-sm: 0.5rem;
-    /* 8px */
-    --spacing-md: 1rem;
-    /* 16px */
-    --spacing-lg: 1.5rem;
-    /* 24px */
-    --spacing-xl: 2rem;
-    /* 32px */
-    --spacing-2xl: 3rem;
-    /* 48px */
-
-    /* Shadows */
-    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-junta: 0 2px 10px -2px rgba(0, 122, 51, 0.1);
-
-    /* Border Radius */
-    --radius-sm: 0.125rem;
-    /* 2px */
-    --radius-md: 0.25rem;
-    /* 4px */
-    --radius-lg: 0.5rem;
-    /* 8px */
-    --radius-xl: 0.75rem;
-    /* 12px */
-    --radius-full: 9999px;
-
-    /* Transitions */
-    --transition-fast: 150ms ease-in-out;
-    --transition-base: 200ms ease-in-out;
-    --transition-slow: 300ms ease-in-out;
+    /* Legacy/Compat mappings */
+    --junta-text: var(--junta-text-dark);
 }
 
-/* ========== 2. Reset & Base Styles ========== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
+/* Estilos globales */
 html,
 body {
     height: 100%;
-    width: 100%;
-}
-
-body {
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-base);
-    line-height: 1.5;
+    margin: 0;
+    font-family: "Roboto", "Source Sans Pro", sans-serif;
     color: var(--junta-text-dark);
-    background-color: var(--junta-bg-light);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
-/* ========== 3. Typography ========== */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--junta-text-dark);
-    margin-bottom: var(--spacing-md);
-}
+/* --- Junta Design System Components --- */
 
-h1 {
-    font-size: var(--font-size-2xl);
-}
-
-h2 {
-    font-size: var(--font-size-xl);
-}
-
-h3 {
-    font-size: var(--font-size-lg);
-}
-
-.text-junta-green {
-    color: var(--junta-primary);
-}
-
-/* ========== 4. Buttons ========== */
+/* Buttons */
 .btn-junta {
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    padding: 0.625rem 1.25rem;
-    font-size: var(--font-size-sm);
-    font-weight: 700;
-    line-height: 1;
-    border-radius: var(--radius-md);
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all var(--transition-base);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
+    gap: 0.5rem;
 }
 
 .btn-junta-primary {
     background-color: var(--junta-primary);
-    color: var(--junta-white);
-    border-color: var(--junta-primary);
-
-    &:hover:not(:disabled) {
-        background-color: var(--junta-primary-dark);
-    }
-}
-
-.btn-search {
-    background-color: var(--junta-primary);
     color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 24px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 14px;
-
-    i {
-        font-size: 16px;
-    }
-
-    &:hover {
-        background-color: var(--junta-primary-dark);
-    }
 }
 
-.btn-clear {
+.btn-junta-primary:hover {
+    background-color: var(--junta-primary-dark);
+    color: white;
+}
+
+.btn-junta-secondary {
     background-color: white;
-    color: var(--junta-primary);
     border: 1px solid var(--junta-primary);
+    color: var(--junta-primary);
+}
+
+.btn-junta-secondary:hover {
+    background-color: var(--junta-primary-light);
+}
+
+.btn-junta-danger {
+    background-color: var(--junta-error);
+    color: white;
+}
+
+/* Cards */
+.card-junta {
+    background: white;
     border-radius: 4px;
-    padding: 8px 16px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 14px;
-
-    &:hover {
-        background-color: var(--junta-primary-light);
-    }
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--junta-border);
+    margin-bottom: 2rem;
 }
 
-/* ========== 5. Form Controls ========== */
-.search-box-junta {
-    background: white;
-    border: 1px solid var(--junta-stroke-green);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
-
-    .form-group-junta {
-        margin-bottom: 0;
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        select,
-        input {
-            width: 100%;
-            border: 1px solid var(--junta-primary);
-            border-radius: var(--radius-md);
-            padding: 8px 12px;
-            font-size: 14px;
-            color: #333;
-            background-color: white;
-
-            &:focus {
-                outline: none;
-                box-shadow: 0 0 0 2px rgba(0, 122, 51, 0.2);
-            }
-        }
-    }
+.card-junta-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--junta-border);
+    font-weight: bold;
+    color: var(--junta-primary);
+    font-size: 1.1rem;
 }
 
-/* ========== 6. Tables ========== */
-.table-container-junta {
-    background: white;
-    margin-top: 2rem;
-
-    h3 {
-        font-size: 1.25rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-    }
+.card-junta-body {
+    padding: 1.5rem;
 }
 
+/* Forms */
+.form-group-junta label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--junta-text-dark);
+}
+
+.form-group-junta input,
+.form-group-junta select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--junta-border);
+    border-radius: 4px;
+    transition: border-color 0.2s;
+}
+
+.form-group-junta input:focus,
+.form-group-junta select:focus {
+    border-color: var(--junta-primary);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--junta-primary-light);
+}
+
+/* Tables */
 .table-junta {
     width: 100%;
     border-collapse: collapse;
-
-    thead {
-        border-bottom: 2px solid #333;
-
-        th {
-            padding: 12px 16px;
-            text-align: left;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #333;
-
-            .sort-icon {
-                display: inline-flex;
-                flex-direction: column;
-                vertical-align: middle;
-                margin-left: 4px;
-                color: #ccc;
-                font-size: 10px;
-
-                &.active {
-                    color: var(--junta-primary);
-                }
-            }
-        }
-    }
-
-    tbody {
-        tr {
-            border-bottom: 1px solid #eee;
-
-            &:nth-child(even) {
-                background-color: #fcfcfc;
-            }
-
-            &:hover {
-                background-color: #f5f8f6;
-            }
-        }
-
-        td {
-            padding: 16px;
-            font-size: 14px;
-            color: #333;
-            vertical-align: middle;
-        }
-    }
+    margin-bottom: 1rem;
 }
 
-/* ========== 7. Pagination ========== */
-.pagination-junta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 1.5rem;
-
-    .page-info {
-        font-size: 14px;
-        color: #333;
-        margin-right: auto;
-    }
-
-    .page-btn {
-        min-width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &.active {
-            background-color: var(--junta-primary);
-            color: white;
-            border-color: var(--junta-primary);
-        }
-
-        &.inactive {
-            background-color: #e6eee9;
-            color: white;
-            cursor: not-allowed;
-
-            i {
-                color: white;
-            }
-        }
-
-        &.number {
-            border: 1px solid var(--junta-primary);
-            color: var(--junta-primary);
-            background: white;
-
-            &:hover:not(.active) {
-                background: #f0f7f2;
-            }
-        }
-
-        &.nav-btn {
-            background-color: var(--junta-primary);
-            color: white;
-            padding: 0 16px;
-            width: auto;
-            text-transform: uppercase;
-            gap: 8px;
-
-            &:hover {
-                background-color: var(--junta-primary-dark);
-            }
-        }
-    }
-
-    .rows-selector {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-left: 24px;
-
-        span {
-            font-weight: 700;
-            color: var(--junta-primary);
-            font-size: 14px;
-        }
-
-        select {
-            border: 1px solid var(--junta-primary);
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 14px;
-        }
-    }
+.table-junta th {
+    background-color: var(--junta-bg-light);
+    color: var(--junta-text-dark);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 1rem;
+    border-bottom: 2px solid var(--junta-border);
+    text-align: left;
 }
 
-/* ========== 8. Badges ========== */
+.table-junta td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--junta-border);
+    vertical-align: middle;
+}
+
+.table-junta tbody tr:hover {
+    background-color: var(--junta-primary-light);
+}
+
+/* Badges */
 .badge-junta {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 10px;
-    font-size: 12px;
-    font-weight: 700;
-    border-radius: 12px;
-    text-transform: capitalize;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #eee;
+    color: #666;
 }
 
 .badge-junta-success {
-    background-color: #007A33;
-    color: white;
-}
-
-.badge-junta-info {
-    background-color: #f0f7f2;
+    background-color: var(--junta-primary-light);
     color: var(--junta-primary);
     border: 1px solid var(--junta-primary);
 }
 
-/* ========== 9. Header ========== */
-.header-junta-modern {
-    background: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #f0f0f0;
-
-    .logo-container {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-
-        .logo-img {
-            height: 40px;
-            border-right: 2px solid #eee;
-            padding-right: 1.5rem;
-        }
-
-        .title-group {
-            .main-title {
-                font-size: 14px;
-                color: #666;
-                display: block;
-                margin-bottom: -2px;
-            }
-
-            .sub-title {
-                font-size: 18px;
-                font-weight: 700;
-                color: var(--junta-primary);
-            }
-        }
-    }
-}
-
-.nav-links-modern {
-    display: flex;
-    gap: 1.5rem;
-
-    .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        text-decoration: none;
-        color: #666;
-        font-size: 12px;
-        font-weight: 500;
-
-        i {
-            font-size: 18px;
-            color: var(--junta-primary);
-        }
-
-        &:hover,
-        &.active {
-            color: var(--junta-primary);
-
-            i {
-                color: var(--junta-primary-dark);
-            }
-        }
-
-        &.active {
-            border-bottom: 3px solid var(--junta-primary);
-            padding-bottom: 8px;
-            margin-bottom: -11px;
-        }
-    }
-}
-
-.user-profile-modern {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding-left: 1.5rem;
-    border-left: 2px solid #eee;
-
-    .user-avatar {
-        width: 32px;
-        height: 32px;
-        background: #f0f0f0;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #999;
-    }
-
-    .user-info {
-        text-align: right;
-
-        .user-name {
-            display: block;
-            font-weight: 700;
-            font-size: 13px;
-            color: #333;
-        }
-
-        .user-role {
-            display: block;
-            font-size: 11px;
-            color: #999;
-        }
-    }
-}
-
-/* ========== Utilities ========== */
-.container-junta {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
+/* Breadcrumbs */
 .breadcrumb-junta {
-    font-size: 12px;
-    margin-bottom: 2rem;
-    color: #999;
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1rem;
+    color: var(--junta-text-medium);
+    font-size: 0.9rem;
+    background: transparent;
+}
 
-    a {
+.breadcrumb-junta a {
+    color: var(--junta-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb-junta a:hover {
+    text-decoration: underline;
+}
+
+/* Spinner de carga */
+.spinner {
+    animation: spin 1.2s linear infinite;
+    font-size: 48px;
+    margin: auto;
+    color: var(--junta-primary);
+    width: fit-content;
+}
+
+/* Spinner en botones */
+.button-spinner {
+    pointer-events: none;
+    border-color: rgba(0, 122, 51, 0.3);
+
+    i {
+        animation: spin 1.2s linear infinite;
+        margin: auto;
         color: var(--junta-primary);
-        text-decoration: none;
+        width: fit-content;
+        font-size: 1rem;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
     }
 
-    span {
-        margin: 0 4px;
+    100% {
+        transform: rotate(360deg)
     }
+}
+
+/* Alertas flotantes */
+.alert-dismissible {
+    position: fixed;
+    bottom: 5dvh;
+    z-index: -100;
+    width: 75dvw;
+    margin: auto;
+
+    &.show {
+        z-index: 1000;
+    }
+}
+
+@media (max-width: 992px) {
+    .alert-dismissible {
+        width: 90dvw;
+    }
+}
+
+/* Utilidades */
+.text-primary {
+    color: var(--junta-primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--junta-primary) !important;
+}
+
+.text-danger {
+    color: var(--junta-error) !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

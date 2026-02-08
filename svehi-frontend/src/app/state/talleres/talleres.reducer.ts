@@ -8,6 +8,10 @@ export interface TalleresState {
     servicios: ServicioTaller[];
     loading: boolean;
     error: any;
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
 }
 
 export const initialState: TalleresState = {
@@ -15,13 +19,22 @@ export const initialState: TalleresState = {
     selectedTallerId: null,
     servicios: [],
     loading: false,
-    error: null
+    error: null,
+    page: 0,
+    size: 10,
+    totalElements: 0,
+    totalPages: 0
 };
 
 export const talleresReducer = createReducer(
     initialState,
     on(TalleresActions.loadTalleres, state => ({ ...state, loading: true })),
-    on(TalleresActions.loadTalleresSuccess, (state, { talleres }) => ({ ...state, loading: false, talleres })),
+    on(TalleresActions.loadTalleresSuccess, (state, { talleres }) => ({
+        ...state,
+        loading: false,
+        talleres: talleres, // Asumiendo que talleres viene ahora paginado, ajustaremos actions después si es necesario
+        // Por ahora, si talleres es array plano, simularemos paginación o backend debe cambiar
+    })),
     on(TalleresActions.loadTalleresFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
     on(TalleresActions.selectTaller, (state, { id }) => ({ ...state, selectedTallerId: id })),

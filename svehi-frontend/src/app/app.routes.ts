@@ -17,6 +17,11 @@ export const routes: Routes = [
         loadComponent: () => import('./presentation/pages/vehiculos-page/vehiculos-page.component').then(m => m.VehiculosPageComponent)
     },
     {
+        path: 'vehiculos/:id',
+        canActivate: [authGuard],
+        loadComponent: () => import('./presentation/pages/vehiculo-detail/vehiculo-detail.component').then(m => m.VehiculoDetailComponent)
+    },
+    {
         path: 'perfiles',
         canActivate: [authGuard],
         loadComponent: () => import('./presentation/pages/perfiles-page/perfiles-page.component').then(m => m.PerfilesPageComponent)
@@ -48,6 +53,11 @@ export const routes: Routes = [
             { path: ':id', loadComponent: () => import('./presentation/talleres/taller-detail.component').then(m => m.TallerDetailComponent) }
         ]
     },
-    { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
-    { path: '**', redirectTo: 'usuarios' }
+    {
+        path: 'dashboard',
+        canActivate: [authGuard],
+        loadComponent: () => import('./presentation/pages/dashboard-page/dashboard-page.component').then(m => m.DashboardPageComponent)
+    },
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: '**', redirectTo: 'dashboard' }
 ];

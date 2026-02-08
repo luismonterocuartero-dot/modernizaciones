@@ -7,6 +7,8 @@ export interface Vehiculo {
     tipoVehiculo: string;
     bastidor: string;
     fechaMatriculacion: string;
+    adscripcion?: string;
+    uso?: string;
     activo: boolean;
 }
 

@@ -14,8 +14,10 @@ import { logout } from '../../../state/auth/auth.actions';
       <div class="header-top">
         <div class="logo-container">
           <!-- Logo Junta Simplified as per image -->
-          <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
-            <path d="M20 80L50 20L80 80H65L50 50L35 80H20Z" fill="#007A33"/>
+          <!-- New Minimalist Logo (Mercedes-badge style) -->
+          <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+            <circle cx="50" cy="50" r="45" stroke="#007A33" stroke-width="4" />
+            <path d="M50 22L78 78H63L50 52L37 78H22L50 22Z" fill="#007A33"/>
           </svg>
           <div class="divider"></div>
           <div class="branding">
@@ -24,6 +26,11 @@ import { logout } from '../../../state/auth/auth.actions';
         </div>
 
         <nav *ngIf="showNav" class="main-nav">
+          <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+            <i class="fa fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+
           <a routerLink="/vehiculos" routerLinkActive="active" class="nav-item">
             <i class="fa fa-car"></i>
             <span>Vehículos</span>
