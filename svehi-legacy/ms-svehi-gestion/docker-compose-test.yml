@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  db-test:
+    image: postgres:15-alpine
+    container_name: svehi-db-test
+    environment:
+      POSTGRES_DB: svehi_test
+      POSTGRES_USER: svehi_user
+      POSTGRES_PASSWORD: svehi_test_pass
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U svehi_user -d svehi_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
