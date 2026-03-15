@@ -1,0 +1,5 @@
+{
+    "apis": {
+        "gestion": "http://localhost:8081/ms-svehi-gestion/api"
+    }
+}

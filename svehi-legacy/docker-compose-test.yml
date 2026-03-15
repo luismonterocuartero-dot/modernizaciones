@@ -1,0 +1,18 @@
+services:
+  db-test:
+    image: postgres:15-alpine # O gvenzl/oracle-xe si prefieres Oracle real
+    container_name: svehi-db-test
+    environment:
+      - POSTGRES_DB=svehi
+      - POSTGRES_USER=svehi_user
+      - POSTGRES_PASSWORD=svehi_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      # Carga el esquema inicial (el script debe estar adaptado o usar uno simplificado)
+      - ./docs/svehi_full.sql:/docker-entrypoint-initdb.d/1.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U svehi_user -d svehi" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5

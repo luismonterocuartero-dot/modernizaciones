@@ -1,0 +1,250 @@
+openapi: 3.0.3
+info:
+  title: API de Gestión SVEHI
+  description: Microservicio para la gestión de vehículos, catálogos y operativa base del sistema SVEHI.
+  version: 1.0.0
+servers:
+  - url: /ms-svehi-gestion/api
+    description: Gateway / Entorno Local
+
+tags:
+  - name: Marcas
+    description: Gestión del catálogo de marcas de vehículos
+  - name: Modelos
+    description: Gestión del catálogo de modelos (dependiente de marca)
+
+paths:
+  /v1/marcas:
+    get:
+      tags: [Marcas]
+      summary: Listar todas las marcas activas
+      operationId: getMarcas
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Listado de marcas obtenido correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarcaVO'
+    post:
+      tags: [Marcas]
+      summary: Crear una nueva marca
+      operationId: createMarca
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarcaVO'
+      responses:
+        '201':
+          description: Marca creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarcaVO'
+
+  /v1/marcas/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags: [Marcas]
+      summary: Obtener detalle de una marca
+      operationId: getMarcaById
+      responses:
+        '200':
+          description: Marca encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarcaVO'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Marcas]
+      summary: Actualizar una marca existente
+      operationId: updateMarca
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarcaVO'
+      responses:
+        '200':
+          description: Marca actualizada
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Marcas]
+      summary: Eliminación lógica de una marca
+      operationId: deleteMarca
+      responses:
+        '204':
+          description: Marca eliminada (soft delete)
+
+  /v1/modelos:
+    get:
+      tags: [Modelos]
+      summary: Listar modelos con filtros
+      operationId: getModelos
+      parameters:
+        - name: marcaId
+          in: query
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModeloVO'
+    post:
+      tags: [Modelos]
+      operationId: createModelo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModeloVO'
+      responses:
+        '201':
+          description: Creado
+
+  /v1/operadoras:
+    get:
+      tags: [Operadoras]
+      operationId: getOperadoras
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperadoraVO'
+
+  /v1/companias:
+    get:
+      tags: [Companias]
+      operationId: getCompanias
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompaniaVO'
+
+components:
+  schemas:
+    MarcaVO:
+      type: object
+      required: [nombre]
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 100
+        activo:
+          type: boolean
+          default: true
+
+    ModeloVO:
+      type: object
+      required: [nombre, marcaId]
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 100
+        marcaId:
+          type: integer
+          format: int64
+        cilindrada:
+          type: string
+        potencia:
+          type: string
+
+    OperadoraVO:
+      type: object
+      required: [nombre]
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        nombre:
+          type: string
+        direccion:
+          type: string
+        telefono:
+          type: string
+
+    CompaniaVO:
+      type: object
+      required: [nombre]
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        nombre:
+          type: string
+
+    AppErrorVO:
+      type: object
+      properties:
+        codigo:
+          type: string
+        mensaje:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+
+  responses:
+    NotFound:
+      description: El recurso solicitado no existe
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AppErrorVO'
+    BadRequest:
+      description: Petición incorrecta o error de validación
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AppErrorVO'

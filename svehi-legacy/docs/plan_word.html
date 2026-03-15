@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Plan de Modernización SVEHI</title>
+    <style>
+        body {
+            font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.5;
+            color: #222;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 22pt;
+            color: #003366;
+            border-bottom: 3px solid #003366;
+            padding-bottom: 8px;
+            margin-top: 40px;
+        }
+
+        h2 {
+            font-size: 16pt;
+            color: #005aab;
+            margin-top: 30px;
+        }
+
+        h3 {
+            font-size: 13pt;
+            color: #0078d4;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 25px 0;
+            font-size: 10pt;
+        }
+
+        th {
+            background-color: #003366;
+            color: white;
+            padding: 8px 10px;
+            text-align: left;
+            border: 1px solid #003366;
+        }
+
+        td {
+            padding: 7px 10px;
+            border: 1px solid #ccc;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f0f4f8;
+        }
+
+        .total-row td {
+            font-weight: bold;
+            background-color: #e6ecf0;
+            border-top: 2px solid #003366;
+        }
+
+        .cover {
+            text-align: center;
+            padding: 100px 40px 60px 40px;
+            page-break-after: always;
+        }
+
+        .cover h1 {
+            font-size: 28pt;
+            border: none;
+            color: #003366;
+        }
+
+        .cover .subtitle {
+            font-size: 16pt;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .cover .meta {
+            font-size: 12pt;
+            color: #777;
+            margin-top: 40px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 9pt;
+            font-weight: bold;
+            color: white;
+        }
+
+        .badge-baja {
+            background-color: #28a745;
+        }
+
+        .badge-media {
+            background-color: #fd7e14;
+        }
+
+        .badge-alta {
+            background-color: #dc3545;
+        }
+
+        .badge-ext {
+            background-color: #6c757d;
+        }
+
+        .note {
+            background-color: #e7f3ff;
+            border-left: 4px solid #0078d4;
+            padding: 12px 16px;
+            margin: 15px 0;
+            font-size: 10pt;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 16px;
+            margin: 15px 0;
+            font-size: 10pt;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PORTADA -->
+    <div class="cover">
+        <h1>Plan de Modernización SVEHI</h1>
+        <p class="subtitle">Estrategia de Transformación a Arquitectura ADA</p>
+        <p class="subtitle">Sistema de Vehículos — Junta de Andalucía</p>
+        <p class="meta">Arquitectura y Desarrollo — Modernización</p>
+        <p class="meta">Marzo 2026</p>
+        <p class="meta" style="margin-top:60px; font-style:italic;">Documento confidencial</p>
+    </div>
+
+    <!-- ÍNDICE -->
+    <h1>Índice de Contenidos</h1>
+    <ol style="font-size:11pt; line-height:2;">
+        <li>Introducción</li>
+        <li>Análisis del Sistema Legacy</li>
+        <li>Arquitectura Objetivo (ADA)</li>
+        <li>Equipo y Capacidad</li>
+        <li>Estimación Detallada por Fase</li>
+        <li>Resumen de Esfuerzo Consolidado</li>
+        <li>Cronograma del Proyecto</li>
+        <li>Hitos y Entregables</li>
+        <li>Riesgos y Mitigaciones</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <!-- 1. INTRODUCCIÓN -->
+    <h1>1. Introducción</h1>
+    <p>Este documento detalla el plan integral para la modernización del sistema <strong>SVEHI</strong> (Sistema de
+        Vehículos de la Junta de Andalucía). El objetivo es la transición desde un monolito legacy Java/JSP hacia una
+        arquitectura moderna de microservicios alineada con el estándar <strong>ADA</strong>, permitiendo una mayor
+        mantenibilidad, escalabilidad y alineación con los estándares corporativos.</p>
+
+    <div class="note">
+        <strong>Alcance:</strong> La modernización cubre los módulos de Vehículos (con 9 sub-recursos), Gestión y
+        Administración (catálogos maestros, usuarios y perfiles), Talleres (servicios y reparaciones) y los servicios
+        transversales (flotas, grupos, seguridad).
+    </div>
+
+    <!-- 2. ANÁLISIS LEGACY -->
+    <h1>2. Análisis del Sistema Legacy</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:30%">Aspecto</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Stack Tecnológico</strong></td>
+                <td>Java (Servlet/JSP) + Spring MVC + Hibernate</td>
+            </tr>
+            <tr>
+                <td><strong>Base de Datos</strong></td>
+                <td>Oracle 19c — Esquema BDD01 (BD corporativa de Presidencia)</td>
+            </tr>
+            <tr>
+                <td><strong>Frontend</strong></td>
+                <td>JSP + Bootstrap 3 + DataTables + jQuery</td>
+            </tr>
+            <tr>
+                <td><strong>Autenticación</strong></td>
+                <td>Certificado digital (popup selección) — se sustituye por SSOweb</td>
+            </tr>
+            <tr>
+                <td><strong>Documentos</strong></td>
+                <td>Almacenados directamente en la BD Oracle (blobs)</td>
+            </tr>
+            <tr>
+                <td><strong>Arquitectura</strong></td>
+                <td>Monolito con capas: Servlet → Service → Repository (DAO)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="warning">
+        <strong>Restricciones clave:</strong>
+        <ul style="margin:5px 0">
+            <li>La BD Oracle 19c (esquema BDD01) se mantiene <strong>sin modificaciones</strong>.</li>
+            <li>No aplica integración @Firma ni Alfresco.</li>
+        </ul>
+    </div>
+
+    <h2>2.1 Módulos Funcionales</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Bloque</th>
+                <th>Módulos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Vehículos</strong></td>
+                <td>Datos generales, Matrículas, Seguros, Tarjetas, Documentos, Equipamiento, Multas, Repostajes,
+                    Tarifas Telepeaje</td>
+            </tr>
+            <tr>
+                <td><strong>Gestión / Admin</strong></td>
+                <td>Usuarios, Perfiles, Permisos, Marcas, Modelos, Operadoras, Compañías, Conceptos, Parámetros,
+                    Importación repostajes</td>
+            </tr>
+            <tr>
+                <td><strong>Talleres</strong></td>
+                <td>Datos del taller, Servicios del taller, Reparaciones</td>
+            </tr>
+            <tr>
+                <td><strong>Transversal</strong></td>
+                <td>Flotas, Grupos / Centros / Presupuestos, Tipos (catálogos)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 3. ARQUITECTURA -->
+    <h1>3. Arquitectura Objetivo (ADA)</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Componente</th>
+                <th>Stack Tecnológico</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Frontend (SPA)</strong></td>
+                <td>Angular 20, TypeScript 5.9, NGRX 20, Bootstrap JdA, Web Components @matter</td>
+            </tr>
+            <tr>
+                <td><strong>ms-svehi-gestion</strong></td>
+                <td>Spring Boot 3, Java 21, Maven, ada-fwk-ms (puerto 8081)</td>
+            </tr>
+            <tr>
+                <td><strong>ms-svehi-talleres</strong></td>
+                <td>Spring Boot 3, Java 21, Maven, ada-fwk-ms (puerto 8082)</td>
+            </tr>
+            <tr>
+                <td><strong>API Design</strong></td>
+                <td>API-first (OpenAPI 3.0, Delegate Pattern)</td>
+            </tr>
+            <tr>
+                <td><strong>Base de datos</strong></td>
+                <td>Oracle 19c — Esquema BDD01 (sin modificar)</td>
+            </tr>
+            <tr>
+                <td><strong>Autenticación</strong></td>
+                <td>SSOweb Junta de Andalucía</td>
+            </tr>
+            <tr>
+                <td><strong>CI/CD</strong></td>
+                <td>Pipeline Cadena Única ADA</td>
+            </tr>
+            <tr>
+                <td><strong>Despliegue</strong></td>
+                <td>OpenShift / Kubernetes JdA (test/pre/pro)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3.1 Distribución de Responsabilidades</h2>
+
+    <h3>ms-svehi-gestion</h3>
+    <p>Gobierno del parque de vehículos, catálogos maestros, usuarios, repostajes, multas y documentación.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Recurso API</th>
+                <th>Entidad JPA</th>
+                <th>Operaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>/v1/vehiculos</td>
+                <td>Vehiculo</td>
+                <td>CRUD + búsqueda + paginación</td>
+            </tr>
+            <tr>
+                <td>/v1/vehiculos/{id}/matriculas</td>
+                <td>VehiculoMatricula</td>
+                <td>CRUD sub-recurso</td>
+            </tr>
+            <tr>
+                <td>/v1/vehiculos/{id}/seguros</td>
+                <td>VehiculoSeguro</td>
+                <td>CRUD sub-recurso</td>
+            </tr>
+            <tr>
+                <td>/v1/vehiculos/{id}/tarjetas</td>
+                <td>VehiculoTarjeta</td>
+                <td>CRUD sub-recurso</td>
+            </tr>
+            <tr>
+                <td>/v1/vehiculos/{id}/documentos</td>
+                <td>VehiculoDocumento</td>
+                <td>CRUD sub-recurso (blob)</td>
+            </tr>
+            <tr>
+                <td>/v1/vehiculos/{id}/equipamientos</td>
+                <td>Equipamiento</td>
+                <td>CRUD sub-recurso</td>
+            </tr>
+            <tr>
+                <td>/v1/vehiculos/{id}/multas</td>
+                <td>Multa</td>
+                <td>CRUD sub-recurso</td>
+            </tr>
+            <tr>
+                <td>/v1/vehiculos/{id}/repostajes</td>
+                <td>Repostaje</td>
+                <td>CRUD sub-recurso</td>
+            </tr>
+            <tr>
+                <td>/v1/vehiculos/{id}/tarifas-telepeaje</td>
+                <td>TarifaTelePeaje</td>
+                <td>CRUD sub-recurso</td>
+            </tr>
+            <tr>
+                <td>/v1/marcas, /v1/modelos</td>
+                <td>Marca, Modelo</td>
+                <td>CRUD + filtro por marca</td>
+            </tr>
+            <tr>
+                <td>/v1/operadoras, /v1/companias</td>
+                <td>Operadora, Compania</td>
+                <td>CRUD</td>
+            </tr>
+            <tr>
+                <td>/v1/parametros, /v1/tipos</td>
+                <td>Parametro, Tipo</td>
+                <td>CRUD + filtro / solo lectura</td>
+            </tr>
+            <tr>
+                <td>/v1/usuarios, /v1/perfiles, /v1/permisos</td>
+                <td>Usuario, Perfil, Permiso</td>
+                <td>CRUD</td>
+            </tr>
+            <tr>
+                <td>/v1/flotas, /v1/grupos</td>
+                <td>Flota, Grupo</td>
+                <td>CRUD con sub-recursos</td>
+            </tr>
+            <tr>
+                <td>/v1/repostajes/importacion</td>
+                <td>Importación masiva</td>
+                <td>Upload + procesado + errores</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>ms-svehi-talleres</h3>
+    <p>Gestión de talleres, sus servicios y el registro de reparaciones de vehículos.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Recurso API</th>
+                <th>Entidad JPA</th>
+                <th>Operaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>/v1/talleres</td>
+                <td>Taller</td>
+                <td>CRUD + búsqueda + paginación</td>
+            </tr>
+            <tr>
+                <td>/v1/talleres/{id}/servicios</td>
+                <td>TallerServicio</td>
+                <td>CRUD sub-recurso</td>
+            </tr>
+            <tr>
+                <td>/v1/talleres/{id}/reparaciones</td>
+                <td>TallerReparacion</td>
+                <td>CRUD sub-recurso</td>
+            </tr>
+            <tr>
+                <td>/v1/reparaciones</td>
+                <td>TallerReparacion</td>
+                <td>Búsqueda global</td>
+            </tr>
+            <tr>
+                <td>/v1/conceptos-reparacion</td>
+                <td>ConceptoReparacion</td>
+                <td>CRUD catálogo</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 4. EQUIPO -->
+    <h1>4. Equipo y Capacidad</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Rol</th>
+                <th>Personas</th>
+                <th>Capacidad diaria</th>
+                <th>Capacidad por fase</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Desarrollador Backend</strong></td>
+                <td>2</td>
+                <td>8h × 2 = 16h/día</td>
+                <td>Esfuerzo back ÷ 2 = días calendario</td>
+            </tr>
+            <tr>
+                <td><strong>Desarrollador Frontend</strong></td>
+                <td>1</td>
+                <td>8h × 1 = 8h/día</td>
+                <td>Esfuerzo front = días calendario</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="note">
+        <strong>Criterio de duración por fase:</strong> Los equipos de backend y frontend trabajan en paralelo dentro de
+        cada fase. La duración calendario de cada fase viene determinada por el <strong>máximo</strong> entre la
+        duración back (esfuerzo ÷ 2) y la duración front (esfuerzo ÷ 1).<br /><br />
+        <strong>Jornada:</strong> 8 horas/día (1 jornada = 1 día laborable).<br />
+        <strong>Inicio del desarrollo:</strong> 1 de enero de 2026.
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 5. ESTIMACIÓN DETALLADA -->
+    <h1>5. Estimación Detallada por Fase</h1>
+
+    <h2>Fase 0 — Preparación</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tarea</th>
+                <th style="width:12%">Peso</th>
+                <th>Back (j)</th>
+                <th>Front (j)</th>
+                <th>Ajust. Back</th>
+                <th>Ajust. Front</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Scaffolding SPA + 2 MS</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>4</td>
+                <td>3</td>
+                <td>2.2</td>
+                <td>1.65</td>
+            </tr>
+            <tr>
+                <td>Docker Compose dev local</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>0</td>
+                <td>1.4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Gestión DevSecOps + Pipeline</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>0</td>
+                <td>1.6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Conectividad Oracle BDD01</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>0</td>
+                <td>1.7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Integración SSOweb</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>4</td>
+                <td>3</td>
+                <td>3.2</td>
+                <td>2.4</td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>Totales Fase 0</strong></td>
+                <td></td>
+                <td><strong>14</strong></td>
+                <td><strong>6</strong></td>
+                <td><strong>10.1</strong></td>
+                <td><strong>4.05</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>Duración calendario:</strong> max(10.1÷2, 4.05÷1) = max(5.1, 4.1) = <strong>6 días laborables</strong>
+    </p>
+
+    <h2>Fase 1 — Gestión y Catálogos (S1-S3)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Módulo</th>
+                <th style="width:12%">Peso</th>
+                <th>Back (j)</th>
+                <th>Front (j)</th>
+                <th>Ajust. Back</th>
+                <th>Ajust. Front</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Marcas</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Modelos (+ filtro marca)</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1.1</td>
+                <td>1.1</td>
+            </tr>
+            <tr>
+                <td>Operadoras</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Compañías</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Conceptos</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Tipos (solo lectura)</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>1</td>
+                <td>1</td>
+                <td>0.5</td>
+                <td>0.5</td>
+            </tr>
+            <tr>
+                <td>Parámetros (+ filtro tipo)</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1.1</td>
+                <td>1.1</td>
+            </tr>
+            <tr>
+                <td>Usuarios (+ perfiles)</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1.2</td>
+                <td>1.2</td>
+            </tr>
+            <tr>
+                <td>Perfiles (+ permisos)</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1.2</td>
+                <td>1.2</td>
+            </tr>
+            <tr>
+                <td>Permisos</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>1</td>
+                <td>1</td>
+                <td>0.5</td>
+                <td>0.5</td>
+            </tr>
+            <tr>
+                <td>Flotas / Grupos</td>
+                <td><span class="badge badge-baja">BAJA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1.2</td>
+                <td>1.2</td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>Totales Fase 1</strong></td>
+                <td></td>
+                <td><strong>20</strong></td>
+                <td><strong>20</strong></td>
+                <td><strong>10.8</strong></td>
+                <td><strong>10.8</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>Duración calendario:</strong> max(10.8÷2, 10.8÷1) = max(5.4, 10.8) = <strong>11 días laborables</strong>
+    </p>
+
+    <h2>Fase 2 — Vehículos (S4-S6)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Módulo</th>
+                <th style="width:12%">Peso</th>
+                <th>Back (j)</th>
+                <th>Front (j)</th>
+                <th>Ajust. Back</th>
+                <th>Ajust. Front</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Vehículo CRUD + filtros + paginación</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>6</td>
+                <td>5</td>
+                <td>4</td>
+                <td>3.5</td>
+            </tr>
+            <tr>
+                <td>Matrículas (sub-recurso)</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>3</td>
+                <td>3</td>
+                <td>1.5</td>
+                <td>1.5</td>
+            </tr>
+            <tr>
+                <td>Seguros (sub-recurso)</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>3</td>
+                <td>3</td>
+                <td>1.5</td>
+                <td>1.5</td>
+            </tr>
+            <tr>
+                <td>Tarjetas (sub-recurso)</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>3</td>
+                <td>3</td>
+                <td>1.5</td>
+                <td>1.5</td>
+            </tr>
+            <tr>
+                <td>Documentos (blob BD)</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>5</td>
+                <td>4</td>
+                <td>3.5</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Equipamiento (sub-recurso)</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>3</td>
+                <td>2</td>
+                <td>1.5</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Multas (sub-recurso)</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>3</td>
+                <td>3</td>
+                <td>1.5</td>
+                <td>1.5</td>
+            </tr>
+            <tr>
+                <td>Repostajes (sub-recurso)</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>3</td>
+                <td>3</td>
+                <td>1.5</td>
+                <td>1.5</td>
+            </tr>
+            <tr>
+                <td>Tarifas Telepeaje</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>3</td>
+                <td>2</td>
+                <td>1.5</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Importación masiva repostajes</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>6</td>
+                <td>4</td>
+                <td>5</td>
+                <td>3</td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>Totales Fase 2</strong></td>
+                <td></td>
+                <td><strong>38</strong></td>
+                <td><strong>32</strong></td>
+                <td><strong>23</strong></td>
+                <td><strong>19.5</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>Duración calendario:</strong> max(23÷2, 19.5÷1) = max(11.5, 19.5) = <strong>20 días laborables</strong>
+    </p>
+
+    <h2>Fase 3 — Talleres (S7-S8)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Módulo</th>
+                <th style="width:12%">Peso</th>
+                <th>Back (j)</th>
+                <th>Front (j)</th>
+                <th>Ajust. Back</th>
+                <th>Ajust. Front</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Taller CRUD + búsqueda + paginación</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>6</td>
+                <td>5</td>
+                <td>3.6</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Servicios del taller (sub-recurso)</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>5</td>
+                <td>4</td>
+                <td>2.75</td>
+                <td>2.2</td>
+            </tr>
+            <tr>
+                <td>Reparaciones + búsqueda global</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>6</td>
+                <td>5</td>
+                <td>4.2</td>
+                <td>3.5</td>
+            </tr>
+            <tr>
+                <td>Conceptos reparación</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>5</td>
+                <td>4</td>
+                <td>2.5</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Integración HTTP ms-gestion</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>6</td>
+                <td>0</td>
+                <td>4.8</td>
+                <td>0</td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>Totales Fase 3</strong></td>
+                <td></td>
+                <td><strong>28</strong></td>
+                <td><strong>18</strong></td>
+                <td><strong>17.85</strong></td>
+                <td><strong>10.7</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>Duración calendario:</strong> max(17.85÷2, 10.7÷1) = max(8.9, 10.7) = <strong>11 días laborables</strong>
+    </p>
+
+    <h2>Fase 4 — Calidad (S9-S10)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tarea</th>
+                <th style="width:12%">Peso</th>
+                <th>Back (j)</th>
+                <th>Front (j)</th>
+                <th>Ajust. Back</th>
+                <th>Ajust. Front</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>SSOweb validación completa</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>2</td>
+                <td>2</td>
+                <td>1.6</td>
+                <td>1.6</td>
+            </tr>
+            <tr>
+                <td>Tests E2E</td>
+                <td><span class="badge badge-alta">ALTA</span></td>
+                <td>4</td>
+                <td>3</td>
+                <td>2.6</td>
+                <td>1.95</td>
+            </tr>
+            <tr>
+                <td>Accesibilidad WCAG</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>1</td>
+                <td>3</td>
+                <td>0.75</td>
+                <td>2.25</td>
+            </tr>
+            <tr>
+                <td>Documentación técnica</td>
+                <td><span class="badge badge-media">MEDIA</span></td>
+                <td>2</td>
+                <td>1</td>
+                <td>1.2</td>
+                <td>0.6</td>
+            </tr>
+            <tr>
+                <td>UAT (equipo externo)</td>
+                <td><span class="badge badge-ext">EXTERNA</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>Totales Fase 4</strong></td>
+                <td></td>
+                <td><strong>9</strong></td>
+                <td><strong>9</strong></td>
+                <td><strong>6.15</strong></td>
+                <td><strong>6.4</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>Duración calendario:</strong> max(6.15÷2, 6.4÷1) = max(3.1, 6.4) = <strong>7 días laborables</strong></p>
+
+    <div class="note">
+        La <strong>UAT</strong> no computa esfuerzo de desarrollo ya que la realiza un equipo externo, pero se mantiene
+        como hito en el cronograma.
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 6. RESUMEN CONSOLIDADO -->
+    <h1>6. Resumen de Esfuerzo Consolidado</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fase</th>
+                <th>Esfuerzo Back (j)</th>
+                <th>Esfuerzo Front (j)</th>
+                <th>Duración Back (÷2)</th>
+                <th>Duración Front (÷1)</th>
+                <th>Duración Fase</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Fase 0</strong> — Setup</td>
+                <td>10.1</td>
+                <td>4.05</td>
+                <td>5.1 días</td>
+                <td>4.1 días</td>
+                <td><strong>6 días</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Fase 1</strong> — Gestión</td>
+                <td>10.8</td>
+                <td>10.8</td>
+                <td>5.4 días</td>
+                <td>10.8 días</td>
+                <td><strong>11 días</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Fase 2</strong> — Vehículos</td>
+                <td>23</td>
+                <td>19.5</td>
+                <td>11.5 días</td>
+                <td>19.5 días</td>
+                <td><strong>20 días</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Fase 3</strong> — Talleres</td>
+                <td>17.85</td>
+                <td>10.7</td>
+                <td>8.9 días</td>
+                <td>10.7 días</td>
+                <td><strong>11 días</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Fase 4</strong> — Calidad</td>
+                <td>6.15</td>
+                <td>6.4</td>
+                <td>3.1 días</td>
+                <td>6.4 días</td>
+                <td><strong>7 días</strong></td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>SUBTOTAL</strong></td>
+                <td><strong>67.9</strong></td>
+                <td><strong>51.45</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>55 días</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table style="margin-top:20px">
+        <thead>
+            <tr>
+                <th>Métrica</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Esfuerzo total (jornadas)</strong></td>
+                <td>~120 jornadas (67.9 back + 51.45 front)</td>
+            </tr>
+            <tr>
+                <td><strong>Esfuerzo total (horas)</strong></td>
+                <td>~955 horas (a 8h/jornada)</td>
+            </tr>
+            <tr>
+                <td><strong>Duración calendario (sin buffer)</strong></td>
+                <td>55 días laborables (~11 semanas)</td>
+            </tr>
+            <tr>
+                <td><strong>Buffer contingencia (+15%)</strong></td>
+                <td>+8 días laborables</td>
+            </tr>
+            <tr>
+                <td><strong>Duración total con buffer</strong></td>
+                <td><strong>63 días laborables (~13 semanas)</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Equipo</strong></td>
+                <td>2 desarrolladores backend + 1 desarrollador frontend</td>
+            </tr>
+            <tr>
+                <td><strong>Ahorro estimado por IA</strong></td>
+                <td>~37% sobre esfuerzo base (~194 jornadas → ~120 jornadas)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 7. CRONOGRAMA -->
+    <h1>7. Cronograma del Proyecto</h1>
+
+    <p>Inicio del desarrollo: <strong>1 de enero de 2026</strong>. Equipo: 2 backend + 1 frontend. Jornada de 8 horas.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fase / Hito</th>
+                <th>Duración</th>
+                <th>Inicio</th>
+                <th>Fin</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color:#d4edda">
+                <td><strong>Discovery</strong> — Análisis y Arquitectura</td>
+                <td>4 semanas</td>
+                <td>01 Dic 2025</td>
+                <td>30 Dic 2025</td>
+            </tr>
+            <tr>
+                <td><strong>Fase 0</strong> — Setup y Preparación</td>
+                <td>6 días</td>
+                <td>01 Ene 2026</td>
+                <td>08 Ene 2026</td>
+            </tr>
+            <tr>
+                <td><strong>Fase 1</strong> — Gestión y Catálogos</td>
+                <td>11 días</td>
+                <td>09 Ene 2026</td>
+                <td>23 Ene 2026</td>
+            </tr>
+            <tr>
+                <td><strong>Fase 2</strong> — Vehículos</td>
+                <td>20 días</td>
+                <td>26 Ene 2026</td>
+                <td>20 Feb 2026</td>
+            </tr>
+            <tr>
+                <td><strong>Fase 3</strong> — Talleres</td>
+                <td>11 días</td>
+                <td>23 Feb 2026</td>
+                <td>09 Mar 2026</td>
+            </tr>
+            <tr>
+                <td><strong>Fase 4</strong> — Calidad y UAT</td>
+                <td>7 días</td>
+                <td>10 Mar 2026</td>
+                <td>18 Mar 2026</td>
+            </tr>
+            <tr style="background-color:#fff3cd">
+                <td><strong>Buffer contingencia (+15%)</strong></td>
+                <td>8 días</td>
+                <td>19 Mar 2026</td>
+                <td>31 Mar 2026</td>
+            </tr>
+            <tr style="background-color:#dc3545; color:white">
+                <td><strong>M4 — GO-LIVE</strong></td>
+                <td><strong>ENTREGA FINAL</strong></td>
+                <td></td>
+                <td><strong>31 Mar 2026</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Gantt visual capturado -->
+    <p style="text-align:center; margin-top:20px;"><img src="gantt_chart_and_efforts_summary_1772808429619.png"
+            alt="Diagrama de Gantt del Proyecto" style="max-width:100%; border:1px solid #ccc; border-radius:4px;" />
+    </p>
+
+    <!-- 8. HITOS -->
+    <h1>8. Hitos y Entregables</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Hito</th>
+                <th>Fecha</th>
+                <th>Entregables</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Discovery OK</strong></td>
+                <td>30 Dic 2025</td>
+                <td>Análisis, arquitectura y plan aprobados</td>
+            </tr>
+            <tr>
+                <td><strong>M0 — Inicio</strong></td>
+                <td>01 Ene 2026</td>
+                <td>Entorno configurado, repos en pipeline, Oracle OK</td>
+            </tr>
+            <tr>
+                <td><strong>M1 — Gestión</strong></td>
+                <td>23 Ene 2026</td>
+                <td>Catálogos + Usuarios/Perfiles/Permisos operativos</td>
+            </tr>
+            <tr>
+                <td><strong>M2 — Vehículos</strong></td>
+                <td>20 Feb 2026</td>
+                <td>Gestión completa de vehículos con 9 sub-recursos</td>
+            </tr>
+            <tr>
+                <td><strong>M3 — Talleres</strong></td>
+                <td>09 Mar 2026</td>
+                <td>Talleres, servicios y reparaciones con integración</td>
+            </tr>
+            <tr>
+                <td><strong>M4 — Go-Live</strong></td>
+                <td><strong>31 Mar 2026</strong></td>
+                <td>Sistema completo, tests E2E, documentación, UAT</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 9. RIESGOS -->
+    <h1>9. Riesgos y Mitigaciones</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Riesgo</th>
+                <th>Prob.</th>
+                <th>Impacto</th>
+                <th>Mitigación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Mapeo JPA contra tablas Oracle legacy</td>
+                <td>Alta</td>
+                <td>Alto</td>
+                <td>Dedicar Fase 0 a verificar mapeo; @Column/@Table explícitos</td>
+            </tr>
+            <tr>
+                <td>Integración SSOweb</td>
+                <td>Media</td>
+                <td>Alto</td>
+                <td>Consultar docs ADA SSOweb, soporte equipo seguridad JdA</td>
+            </tr>
+            <tr>
+                <td>Dependencia librerías ADA privadas</td>
+                <td>Alta</td>
+                <td>Alto</td>
+                <td>Validar disponibilidad Maven al inicio</td>
+            </tr>
+            <tr>
+                <td>Tiempos DevSecOps para pipeline</td>
+                <td>Media</td>
+                <td>Medio</td>
+                <td>Iniciar gestiones en paralelo al scaffolding</td>
+            </tr>
+            <tr>
+                <td>Performance Oracle (sin control sobre índices)</td>
+                <td>Media</td>
+                <td>Alto</td>
+                <td>Queries nativas @Query donde necesario</td>
+            </tr>
+            <tr>
+                <td>Cuello de botella 1 dev frontend</td>
+                <td>Alta</td>
+                <td>Alto</td>
+                <td>Priorizar componentes compartidos y reutilización de patrones</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="text-align:center; color:#888; margin-top:60px; font-style:italic;">
+        Este documento es propiedad confidencial y está destinado exclusivamente a la planificación del proyecto SVEHI.
+    </p>
+
+</body>
+
+</html>
